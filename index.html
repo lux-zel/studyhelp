@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self' https:; 
+               script-src 'self' https: https://www.gstatic.com;
+               style-src 'self' https:;
+               img-src 'self' https: data:;">
+    <meta charset="UTF-8">
+    <meta name="color-scheme" content="light dark">
+    <title>Login or Signup</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script type="module" crossorigin src="/assets/index-Bx3nv0T-.js"></script>
+</head>
+<body>
+
+<div style="text-align: center;"><h1>Welcome to Learn-Better-Together!</h1></div>
+
+<br><br><br><br><br>
+
+<center>
+    <div id="auth-container" style="
+        width: 300px;
+        border: 2px solid #5a5a5a;
+        padding: 30px;
+        margin: 0 auto;
+        background: color-scheme;
+        ">
+
+        <div>
+        <h3>login or sign up</h3>
+        </div>
+
+        <!-- Message display -->
+        <div id="message" style="display:none; padding:10px; margin:10px 0; border-radius:4px;"></div>
+
+        <!-- Login/Signup Form -->
+        <div>
+            <input type="email" id="email" placeholder="your@email.com" required style="width: 90%; padding: 8px;">
+        </div>
+
+        <br>
+
+        <div>
+            <input type="password" id="password" required minlength="8" placeholder="password (min 8 characters)" style="width: 90%; padding: 8px;">
+        </div>
+
+        <br>
+
+        <div>
+            <button id="signUpBtn" style="padding: 8px 20px; margin-right: 10px;">Sign Up</button>
+            <button id="signInBtn" style="padding: 8px 20px;">Login</button>
+        </div>
+        
+        <div style="margin-top: 15px; font-size: 14px;">
+            <p><a href="#" id="resetPasswordLink" style="color: #4285f4;">Forgot password?</a></p>
+        </div>
+    </div>
+</center>
+
+<!-- User Info Box (hidden by default) -->
+<center>
+    <div id="user-container" style="
+        width: 300px;
+        border: 2px solid #5a5a5a;
+        padding: 30px;
+        margin: 0 auto;
+        background: color-scheme;
+        display: none;
+        ">
+        
+        <div>
+            <h3>Welcome, <span id="user-email"></span>!</h3>
+            <p><strong>Email:</strong> <span id="display-email"></span></p>
+            <p><strong>Email verified:</strong> <span id="email-verified"></span></p>
+        </div>
+        
+        <br>
+        
+        <div>
+            <button id="signOutBtn" style="padding: 8px 20px;">Logout</button>
+        </div>
+    </div>
+</center>
+
+<!-- Main script -->
+
+</body>
+</html>
