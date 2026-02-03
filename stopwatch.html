@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self' https:; 
+               script-src 'self' 'unsafe-inline' https:;
+               style-src 'self' 'unsafe-inline' https:;
+               img-src 'self' https: data:;">
     <meta charset="UTF-8">
     <meta name="color-scheme" content="light dark">
     <title>Study Stopwatch</title>
@@ -9,6 +14,8 @@
   
 <meta name="color-scheme" content="light dark">
 
+
+<center>
 <h1>Study Stopwatch</h1>
 
 <div>
@@ -42,6 +49,7 @@
     <h3>Recent Sessions:</h3>
     <div id="history"></div>
 </div>
+</center>
 
     <script src="stopwatch.js" defer></script>
 
