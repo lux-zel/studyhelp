@@ -1,4 +1,3 @@
-// Auth with security improvements
 import { auth } from './firebase-config.js';
 import { 
     createUserWithEmailAndPassword, 
@@ -9,7 +8,6 @@ import {
     sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-// Rate limiting for auth attempts (prevents brute force)
 const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 60000; // 1 minute
 const MAX_ATTEMPTS = 5;
@@ -18,7 +16,6 @@ function checkRateLimit(key) {
     const now = Date.now();
     const attempts = rateLimitMap.get(key) || [];
     
-    // Remove old attempts outside the window
     const recentAttempts = attempts.filter(time => now - time < RATE_LIMIT_WINDOW);
     
     if (recentAttempts.length >= MAX_ATTEMPTS) {
@@ -30,7 +27,6 @@ function checkRateLimit(key) {
     return true;
 }
 
-// Input validation
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email) && email.length <= 254;
@@ -40,7 +36,6 @@ function validatePassword(password) {
     return password && password.length >= 8;
 }
 
-// Sanitize error messages (don't expose system details)
 function sanitizeErrorMessage(error) {
     const errorMap = {
         'auth/email-already-in-use': 'Email already in use. Try logging in instead.',
@@ -56,7 +51,6 @@ function sanitizeErrorMessage(error) {
     return errorMap[error.code] || 'An error occurred. Please try again.';
 }
 
-// Show message function
 export function showMessage(text, isError = false) {
     const messageDiv = document.getElementById('message');
     if (!messageDiv) return;
@@ -70,23 +64,19 @@ export function showMessage(text, isError = false) {
     messageDiv.style.margin = '10px 0';
     messageDiv.style.borderRadius = '4px';
     
-    // Auto-hide after 5 seconds
     setTimeout(() => {
         messageDiv.style.display = 'none';
     }, 5000);
 }
 
-// Check if user is already logged in
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // User is signed in
         const authContainer = document.getElementById('auth-container');
         const userContainer = document.getElementById('user-container');
         
         if (authContainer) authContainer.style.display = 'none';
         if (userContainer) userContainer.style.display = 'block';
         
-        // Display user info
         const userEmail = document.getElementById('user-email');
         const displayEmail = document.getElementById('display-email');
         const emailVerified = document.getElementById('email-verified');
@@ -95,7 +85,6 @@ onAuthStateChanged(auth, (user) => {
         if (displayEmail) displayEmail.textContent = sanitizeEmail(user.email);
         if (emailVerified) emailVerified.textContent = user.emailVerified ? '✅ Yes' : '❌ No';
     } else {
-        // User is signed out
         const authContainer = document.getElementById('auth-container');
         const userContainer = document.getElementById('user-container');
         
@@ -104,14 +93,12 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Sanitize email display (hide part of email)
 function sanitizeEmail(email) {
     const [localPart, domain] = email.split('@');
     const hidden = localPart.slice(0, 2) + '*'.repeat(Math.max(0, localPart.length - 2));
     return `${hidden}@${domain}`;
 }
 
-// Sign up function
 export async function signUp() {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -144,12 +131,10 @@ export async function signUp() {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         
-        // Send email verification
         await sendEmailVerification(userCredential.user);
         
         showMessage('Account created! Please check your email for verification link.');
         
-        // Clear form
         emailInput.value = '';
         passwordInput.value = '';
     } catch (error) {
@@ -157,7 +142,6 @@ export async function signUp() {
     }
 }
 
-// Sign in function
 export async function signIn() {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -192,7 +176,6 @@ export async function signIn() {
     }
 }
 
-// Sign out function
 export async function signOut() {
     try {
         await firebaseSignOut(auth);
@@ -202,7 +185,6 @@ export async function signOut() {
     }
 }
 
-// Reset password function
 export async function resetPassword() {
     const emailInput = document.getElementById('email');
     let email = emailInput ? emailInput.value.trim() : '';
@@ -233,7 +215,6 @@ export async function resetPassword() {
     }
 }
 
-// Enter key support for password field
 const passwordInput = document.getElementById('password');
 if (passwordInput) {
     passwordInput.addEventListener('keypress', (e) => {

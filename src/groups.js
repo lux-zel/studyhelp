@@ -1,4 +1,3 @@
-// Firestore-backed groups implementation with security improvements
 import { auth, db } from './firebase-config.js';
 import { 
     collection, 
@@ -16,19 +15,16 @@ import {
     onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// Input validation
 function validateGroupName(name) {
     if (!name || typeof name !== 'string') return false;
     const trimmed = name.trim();
     return trimmed.length >= 2 && trimmed.length <= 100;
 }
 
-// Sanitize group name (prevent XSS)
 function sanitizeGroupName(name) {
     return String(name).trim().slice(0, 100);
 }
 
-// Create a new group
 export async function createGroup() {
     const user = auth.currentUser;
     if (!user) {
@@ -55,13 +51,11 @@ export async function createGroup() {
         });
         alert('Group created!');
     } catch (err) {
-        // Sanitize error message
         const errorMsg = err.code ? 'Error creating group. Please try again.' : err.message;
         alert(errorMsg);
     }
 }
 
-// Join a group
 export async function joinGroup(groupId) {
     const user = auth.currentUser;
     if (!user) {
@@ -99,7 +93,6 @@ export async function joinGroup(groupId) {
     }
 }
 
-// Leave a group
 export async function leaveGroup(groupId) {
     const user = auth.currentUser;
     if (!user) {
@@ -120,7 +113,6 @@ export async function leaveGroup(groupId) {
             members: arrayRemove(user.uid)
         });
 
-        // Remove group if empty
         const updated = await getDoc(docRef);
         const members = updated.exists() ? (updated.data().members || []) : [];
         if (members.length === 0) {
@@ -134,7 +126,6 @@ export async function leaveGroup(groupId) {
     }
 }
 
-// Display all groups (real-time) with sanitized member display
 export function showGroups() {
     const container = document.getElementById('groupsList');
     if (!container) return;
@@ -181,7 +172,6 @@ export function showGroups() {
             cell1.style.border = '1px solid #ccc';
             cell1.style.padding = '8px';
 
-            // Show member count instead of raw UIDs (privacy)
             const cell2 = row.insertCell(1);
             cell2.textContent = `${(data.members || []).length} member${(data.members || []).length !== 1 ? 's' : ''}`;
             cell2.style.border = '1px solid #ccc';
@@ -213,9 +203,7 @@ export function showGroups() {
     });
 }
 
-// Wire up buttons and initial auth check
 document.addEventListener('DOMContentLoaded', () => {
-    // Buttons (added IDs in HTML)
     const createBtn = document.getElementById('createGroupBtn');
     const refreshBtn = document.getElementById('refreshGroupsBtn');
     const backBtn = document.getElementById('backHomeBtn');
@@ -228,10 +216,8 @@ document.addEventListener('DOMContentLoaded', () => {
         auth.signOut().then(() => window.location.href = 'index.html');
     });
 
-    // Ensure user is logged in before showing groups
     const user = auth.currentUser;
     if (!user) {
-        // If auth state not ready yet, wait for it
         onAuthStateChanged(auth, (u) => {
             if (!u) {
                 alert('Please login first!');
@@ -245,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Export functions to global scope in case other scripts call them
 window.createGroup = createGroup;
 window.joinGroup = joinGroup;
 window.leaveGroup = leaveGroup;

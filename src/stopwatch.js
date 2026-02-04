@@ -1,10 +1,7 @@
-// Stopwatch with data validation and encryption
-// Storage keys
 const TODAY_KEY = 'stopwatch_today';
 const ALL_TIME_KEY = 'stopwatch_alltime';
 const SESSIONS_KEY = 'stopwatch_sessions';
 
-// Simple encryption using base64 (not cryptographically secure, but prevents casual observation)
 function encryptData(data) {
     return btoa(JSON.stringify(data));
 }
@@ -17,7 +14,6 @@ function decryptData(encoded) {
     }
 }
 
-// Validate stored data
 function validateStoredData(data) {
     if (!data || typeof data !== 'object') return null;
     if (typeof data.total !== 'number' || data.total < 0) return null;
@@ -32,13 +28,11 @@ function validateSession(session) {
     return session;
 }
 
-// Timer state
 let startTime = 0;
 let elapsed = 0;
 let running = false;
 let interval;
 
-// Load and decrypt data with fallback
 let todayData = null;
 let allTimeData = null;
 let sessions = null;
@@ -96,7 +90,7 @@ function formatTime(ms) {
 }
 
 export function saveSession() {
-    if (elapsed < 1000) return; // Don't save sessions < 1 second
+    if (elapsed < 1000) return;
     
     const session = {
         duration: elapsed,
@@ -106,21 +100,18 @@ export function saveSession() {
         timestamp: Date.now()
     };
     
-    // Validate before adding
     if (!validateSession(session)) {
         console.error('Invalid session data');
         return;
     }
     
-    // Add to sessions
-    sessions.unshift(session); // Add to beginning
-    if (sessions.length > 20) sessions = sessions.slice(0, 20); // Keep last 20
+    sessions.unshift(session); 
+    if (sessions.length > 20) sessions = sessions.slice(0, 20); 
     
-    // Update totals with validation
     const newTotal = todayData.total + elapsed;
     if (newTotal < todayData.total) {
         console.error('Total overflow detected');
-        return; // Prevent negative/overflow totals
+        return; 
     }
     
     todayData.total = newTotal;
@@ -135,7 +126,6 @@ export function saveSession() {
     allTimeData.total = newAllTimeTotal;
     allTimeData.sessions += 1;
     
-    // Reset current timer
     elapsed = 0;
     const timerDisplay = document.getElementById('timer');
     if (timerDisplay) timerDisplay.textContent = '00:00:00';
@@ -146,7 +136,6 @@ export function saveSession() {
         if (controlBtn) controlBtn.textContent = 'START';
     }
     
-    // Save and update display
     saveAllData();
     updateDisplay();
 }
@@ -172,7 +161,6 @@ export function updateDisplay() {
     if (allTimeTotal) allTimeTotal.textContent = formatTime(allTimeData.total);
     if (totalSessions) totalSessions.textContent = allTimeData.sessions;
     
-    // Show history
     const historyDiv = document.getElementById('history');
     if (!historyDiv) return;
     
@@ -209,7 +197,6 @@ export function clearAll() {
     }
 }
 
-// Reset today's data if it's a new day
 function checkNewDay() {
     const today = new Date().toDateString();
     const lastSaved = localStorage.getItem('stopwatch_lastdate');
@@ -221,6 +208,5 @@ function checkNewDay() {
     }
 }
 
-// Initialize
 checkNewDay();
 updateDisplay();

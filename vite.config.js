@@ -1,8 +1,6 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  // Base path for GitHub Pages (project site). Adjust so built assets load from
-  // https://<user>.github.io/Learn-Better-Together/
   base: '/Learn-Better-Together/',
   server: {
     port: 3000,
