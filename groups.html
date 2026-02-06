@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self' https:; 
+               script-src 'self' https:;
+               style-src 'self' https:;
+               img-src 'self' https: data:;">
+    <meta charset="UTF-8">
+    <meta name="color-scheme" content="light dark">
+    <title>Groups</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script type="module" crossorigin src="/Learn-Better-Together/assets/groups-8vCXMrrM.js"></script>
+  <link rel="modulepreload" crossorigin href="/Learn-Better-Together/assets/auth-HNLA2NWH.js">
+</head>
+<body>
+
+    <meta name="color-scheme" content="light dark">
+
+    <center>
+        <h1>Study Groups</h1>
+        <p>Welcome, <b id="username"></b>!</p>
+        
+        <div>
+            <button id="createGroupBtn">Create New Group</button>
+            <button id="refreshGroupsBtn">Refresh Groups</button>
+            <button id="backHomeBtn">Back to Home</button>
+            <button id="logoutBtn">Logout</button>
+        </div>
+        
+        <br>
+        
+        <div id="groupsList">
+        </div>
+    </center>
+    
+
+</body>
+</html>
