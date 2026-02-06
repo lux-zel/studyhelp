@@ -9,6 +9,14 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    rollupOptions: {
+      input: {
+        main: '/index.html',
+        homepage: '/homepage.html',
+        groups: '/groups.html',
+        stopwatch: '/public/stopwatch.html'
+      }
+    }
   },
   define: {
     __VITE_FIREBASE_API_KEY__: JSON.stringify(process.env.VITE_FIREBASE_API_KEY),
