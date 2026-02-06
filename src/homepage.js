@@ -12,7 +12,7 @@ groupsBtn.addEventListener('click', () => {
 });
 
 stopwatchBtn.addEventListener('click', () => {
-    window.location.href = './public/stopwatch.html';
+    window.location.href = './stopwatch.html';
 });
 
 logoutBtn.addEventListener('click', signOut);

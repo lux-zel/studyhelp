@@ -14,7 +14,7 @@ export default defineConfig({
         main: '/index.html',
         homepage: '/homepage.html',
         groups: '/groups.html',
-        stopwatch: '/public/stopwatch.html'
+        stopwatch: '/stopwatch.html'
       }
     }
   },
